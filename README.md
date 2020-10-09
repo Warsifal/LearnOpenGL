@@ -32,3 +32,51 @@
     3. glewInit() function should be called after having a valid OpenGL rendering context.
 
 # Day 2 - Draw a Triangle
+
+1. Create a vertex array.
+
+    ```cpp
+    // create three vertexes contain two float per vertex
+    	float positions[6] = {
+    		-0.5f, -0.5f,
+    		-0.0f,  0.5f,
+    		 0.5f, -0.5f
+    	};
+    ```
+
+2. Create a vertex buffer. OpenGL is similar to state machine, I set value buffer here as input, and it come out with assigned value ,which contains the id of the vertex buffer. We can access the buffer by the buffer id.
+
+    ```cpp
+    // create vertex buffer, buffer(unsigned int) is the id of buffer 
+    	unsigned int buffer;
+    	glGenBuffers(1, &buffer);
+    	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+    ```
+
+3. Declare the formation of vertex. Draw function needs to know what is inside a vertex, Because a single vertex might takes lots of values as attributes. I took two float value as the location of a vertex.
+
+    ```cpp
+    // declare the formation of the vertex
+    	glEnableVertexAttribArray(0);
+    	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+    ```
+
+4. Finish the draw call function.
+
+    ```cpp
+    while (!glfwWindowShouldClose(window))
+    	{
+    		/* Render here */
+    		glClear(GL_COLOR_BUFFER_BIT);
+
+    		// draw a triangle
+    		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    		/* Swap front and back buffers */
+    		glfwSwapBuffers(window);
+
+    		/* Poll for and process events */
+    		glfwPollEvents();
+    	}
+    ```
